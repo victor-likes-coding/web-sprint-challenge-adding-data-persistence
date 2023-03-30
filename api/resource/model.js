@@ -6,7 +6,7 @@ function getResources() {
 }
 
 function getResourceById(id) {
-  return db('resources').where({ id }).first();
+  return db('resources').where({ resource_id: id }).first();
 }
 
 function addResource(resource) {
@@ -19,7 +19,7 @@ function addResource(resource) {
 
 function updateResource(id, changes) {
   return db('resources')
-    .where({ id })
+    .where({ resource_id: id })
     .update(changes)
     .then(() => {
       return getResourceById(id);
@@ -27,7 +27,7 @@ function updateResource(id, changes) {
 }
 
 function removeResource(id) {
-  return db('resources').where({ id }).del();
+  return db('resources').where({ resource_id: id }).del();
 }
 
 module.exports = {
