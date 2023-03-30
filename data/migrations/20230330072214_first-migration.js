@@ -20,12 +20,12 @@ exports.up = async function (knex) {
       table.string('task_description').notNullable();
       table.string('task_notes');
       table.integer('task_completed').defaultTo(0);
-      table.integer('project_id').unsigned().notNullable().references('project_id').inTable('projects');
+      table.integer('project_id').unsigned().notNullable().references('project_id').inTable('projects').onDelete('CASCADE').onUpdate('CASCADE');
     })
     .createTable('project_resources', function (table) {
       table.increments('id');
-      table.integer('project_id').unsigned().notNullable().references('project_id').inTable('projects');
-      table.integer('resource_id').unsigned().notNullable().references('resource_id').inTable('resources');
+      table.integer('project_id').unsigned().notNullable().references('project_id').inTable('projects').onDelete('CASCADE').onUpdate('CASCADE');
+      table.integer('resource_id').unsigned().notNullable().references('resource_id').inTable('resources').onDelete('CASCADE').onUpdate('CASCADE');
     });
 };
 
