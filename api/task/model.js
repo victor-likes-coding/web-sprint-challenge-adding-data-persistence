@@ -2,11 +2,21 @@
 const db = require('../../data/dbConfig');
 
 function getTasks() {
-  return db('tasks');
+  return db('tasks as t')
+    .join('projects as p', 't.project_id', 'p.project_id')
+    .select('t.*', 'p.project_name', 'p.project_description')
+    .then((tasks) => {
+      return tasks.map((task) => {
+        return { ...task, task_completed: Boolean(task.task_completed) };
+      });
+    });
 }
 
 function getTaskById(id) {
-  return db('tasks').where({ id }).first();
+  return db('tasks')
+    .where({ task_id: id })
+    .first()
+    .then((task) => ({ ...task, task_completed: Boolean(task.task_completed) }));
 }
 
 function addTask(task) {
@@ -19,7 +29,7 @@ function addTask(task) {
 
 function updateTask(id, changes) {
   return db('tasks')
-    .where({ id })
+    .where({ task_id: id })
     .update(changes)
     .then(() => {
       return getTaskById(id);
@@ -27,7 +37,7 @@ function updateTask(id, changes) {
 }
 
 function removeTask(id) {
-  return db('tasks').where({ id }).del();
+  return db('tasks').where({ task_id: id }).del();
 }
 
 module.exports = {
