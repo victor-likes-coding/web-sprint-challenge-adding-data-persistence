@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const projectsRouter = require('./projects/projects-router');
 const resourcesRouter = require('./resources/resources-router');
+const taskRouter = require('./tasks/tasks-router');
 const server = express();
 
 server.use(express.json());
@@ -12,5 +13,6 @@ server.use(cors());
 
 server.use('/api/projects', projectsRouter);
 server.use('/api/resources', resourcesRouter);
+server.use('/api/tasks', taskRouter);
 
 module.exports = server;
