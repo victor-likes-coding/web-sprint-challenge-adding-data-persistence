@@ -29,7 +29,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   const taskData = req.body;
-  if (!taskData.description) {
+  if (!taskData.task_description) {
     next({ status: 400, message: 'Task description is required.' });
   } else {
     try {
@@ -74,6 +74,14 @@ router.delete('/:id', async (req, res, next) => {
   } catch (err) {
     next({ status: 500, message: `Could not delete task with ID ${id}.` });
   }
+});
+
+// eslint-disable-next-line
+router.use((err, req, res, next) => {
+  console.log(err);
+  res.status(err.status || 500).json({
+    message: err.message,
+  });
 });
 
 module.exports = router;
