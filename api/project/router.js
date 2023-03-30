@@ -6,7 +6,8 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
   try {
     const projects = await getProjects();
-    res.json(projects);
+    const mapped = projects.map(({ project_completed, ...project }) => ({ ...project, project_completed: Boolean(project_completed) }));
+    res.json(mapped);
   } catch (err) {
     next({ status: 500, message: 'Could not retrieve projects.' });
   }
@@ -28,13 +29,14 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   const projectData = req.body;
-  if (!projectData.name) {
+  if (!projectData.project_name) {
     next({ status: 400, message: 'Project name is required.' });
   } else {
     try {
-      const newProject = await addProject(projectData);
-      res.status(201).json(newProject);
+      const project = await addProject(projectData);
+      res.status(201).json({ ...project, project_completed: Boolean(project.project_completed) });
     } catch (err) {
+      console.log(err);
       next({ status: 500, message: 'Could not add project.' });
     }
   }
@@ -73,6 +75,14 @@ router.delete('/:id', async (req, res, next) => {
   } catch (err) {
     next({ status: 500, message: `Could not delete project with ID ${id}.` });
   }
+});
+
+// eslint-disable-next-line
+router.use((err, req, res, next) => {
+  console.log(err);
+  res.status(err.status || 500).json({
+    message: err.message,
+  });
 });
 
 module.exports = router;
