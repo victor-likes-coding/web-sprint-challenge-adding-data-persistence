@@ -6,7 +6,7 @@ function getProjects() {
 }
 
 function getProjectById(id) {
-  return db('projects').where({ id }).first();
+  return db('projects').where({ project_id: id }).first();
 }
 
 function addProject(project) {
@@ -19,7 +19,7 @@ function addProject(project) {
 
 function updateProject(id, changes) {
   return db('projects')
-    .where({ id })
+    .where({ project_id: id })
     .update(changes)
     .then(() => {
       return getProjectById(id);
@@ -27,7 +27,7 @@ function updateProject(id, changes) {
 }
 
 function removeProject(id) {
-  return db('projects').where({ id }).del();
+  return db('projects').where({ project_id: id }).del();
 }
 
 module.exports = {
