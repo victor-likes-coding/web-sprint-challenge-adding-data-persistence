@@ -2,9 +2,9 @@
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
-const projectsRouter = require('./projects/projects-router');
-const resourcesRouter = require('./resources/resources-router');
-const taskRouter = require('./tasks/tasks-router');
+const projectsRouter = require('./project/router');
+const resourcesRouter = require('./resource/router');
+const taskRouter = require('./task/router');
 const server = express();
 
 server.use(express.json());
